@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { site } from "@/content/site";
 import { Icon } from "./icons";
+import { LogoMark } from "./logo";
 import { ThemeToggle } from "./theme-toggle";
 
 const nav = [
@@ -53,9 +54,12 @@ export function SiteHeader() {
   return (
     <header className="top">
       <div className="wrap">
-        <Link className="brand" href={onHome ? "#home" : "/"}>
-          {site.shortName}
-          <span>.</span>
+        <Link className="brand" href={onHome ? "#home" : "/"} aria-label={`${site.shortName} — home`}>
+          <LogoMark size={34} />
+          <span className="brand-word">
+            {site.shortName}
+            <span>.</span>
+          </span>
         </Link>
         <nav className="links" aria-label="Sections">
           {links}

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { notFound } from "next/navigation";
-import { ProjectCover } from "@/components/project-cover";
+import Image from "next/image";
 import { projectCards } from "@/content/project-cards";
 import { getProject, projects } from "@/content/projects";
 import { site } from "@/content/site";
@@ -31,36 +31,57 @@ export default async function ProjectPage(props: PageProps<"/work/[slug]">) {
 
   const index = projects.indexOf(project);
   const next = projects[(index + 1) % projects.length];
+  const cover = projectCards[project.slug]?.cover;
 
   return (
     <article>
-      <header className="mx-auto grid max-w-6xl items-center gap-10 px-4 py-10 sm:px-8 sm:py-14 lg:grid-cols-[1fr_1.1fr]">
-        <div>
-          <Link href="/#projects" className="text-sm text-muted transition-colors hover:text-accent">
-            ← All projects
-          </Link>
-          <p className="mt-8 text-xs font-semibold tracking-wider text-accent uppercase">{project.category}</p>
-          <h1 className="mt-2 text-4xl font-bold tracking-tight sm:text-5xl">{project.name}</h1>
-          <p className="mt-2 text-lg text-muted">{project.tagline}</p>
-          <p className="mt-5 leading-relaxed text-muted">{project.summary}</p>
-          <div className="mt-6 flex flex-wrap gap-2">
-            {project.links?.map((l) => (
-              <a
-                key={l.href}
-                href={l.href}
-                target="_blank"
-                rel="noreferrer"
-                className="rounded-full bg-accent px-5 py-2 text-sm font-medium text-accent-fg transition-colors hover:bg-accent-hover"
-              >
-                Visit {l.label} ↗
-              </a>
-            ))}
+      <header className="mx-auto max-w-6xl px-4 pt-10 sm:px-8 sm:pt-14">
+        <Link href="/#projects" className="text-sm text-muted transition-colors hover:text-accent">
+          ← All projects
+        </Link>
+        <div className="mt-8 grid items-end gap-6 lg:grid-cols-[1.3fr_1fr]">
+          <div>
+            <p className="text-xs font-semibold tracking-wider text-accent uppercase">{project.category}</p>
+            <h1 className="mt-2 text-4xl font-bold tracking-tight sm:text-5xl">{project.name}</h1>
+            <p className="mt-2 text-lg text-muted">{project.tagline}</p>
+          </div>
+          <div>
+            <p className="leading-relaxed text-muted">{project.summary}</p>
+            {project.links && (
+              <div className="mt-5 flex flex-wrap gap-2">
+                {project.links.map((l) => (
+                  <a
+                    key={l.href}
+                    href={l.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="rounded-full bg-accent px-5 py-2 text-sm font-medium text-accent-fg transition-colors hover:bg-accent-hover"
+                  >
+                    Visit {l.label} ↗
+                  </a>
+                ))}
+              </div>
+            )}
           </div>
         </div>
-        {projectCards[project.slug] && (
-          <div className="overflow-hidden rounded-2xl border border-line shadow-[var(--shadow)]">
-            <ProjectCover cover={projectCards[project.slug].cover} priority />
-          </div>
+        {cover && (
+          <a
+            href={cover.image}
+            target="_blank"
+            rel="noreferrer"
+            className="mt-10 block overflow-hidden rounded-2xl border border-line bg-card shadow-[var(--shadow)]"
+            title="Open full-size image"
+          >
+            <Image
+              src={cover.image}
+              alt={cover.alt}
+              width={cover.width}
+              height={cover.height}
+              priority
+              sizes="(max-width: 1140px) 100vw, 1080px"
+              className="h-auto w-full"
+            />
+          </a>
         )}
       </header>
 
@@ -109,8 +130,10 @@ export default async function ProjectPage(props: PageProps<"/work/[slug]">) {
 
       {project.problems.length > 0 && (
         <Band>
-          <Eyebrow>Impact</Eyebrow>
-          <h2 className="mt-2 text-2xl font-bold tracking-tight">Problems Solved</h2>
+          <Eyebrow>{project.results ? "Engineering" : "Impact"}</Eyebrow>
+          <h2 className="mt-2 text-2xl font-bold tracking-tight">
+            {project.results ? "Technical Highlights" : "Problems Solved"}
+          </h2>
           <ul className="mt-6 grid gap-x-10 gap-y-3 md:grid-cols-2">
             {project.problems.map((p) => (
               <li key={p} className="flex gap-3 text-sm leading-relaxed">
@@ -118,6 +141,20 @@ export default async function ProjectPage(props: PageProps<"/work/[slug]">) {
                   <path d="m5 12 5 5 9-10" />
                 </svg>
                 {p}
+              </li>
+            ))}
+          </ul>
+        </Band>
+      )}
+
+      {project.results && (
+        <Band>
+          <Eyebrow>Outcome</Eyebrow>
+          <h2 className="mt-2 text-2xl font-bold tracking-tight">Results</h2>
+          <ul className="mt-6 grid gap-4 md:grid-cols-3">
+            {project.results.map((r) => (
+              <li key={r} className="rounded-xl border border-line bg-card p-5 text-sm leading-relaxed">
+                {r}
               </li>
             ))}
           </ul>

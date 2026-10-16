@@ -11,6 +11,7 @@ export type Project = {
   overview: string;
   highlights: { title: string; body: string }[];
   problems: string[];
+  results?: string[];
   stack: string[];
   scale?: string;
   note?: string;
@@ -117,38 +118,39 @@ export const projects: Project[] = [
     stack: ["Vue 3", "Quasar", "Vuex", "Node.js", "WebSockets", "Fabric.js", "Solr", "Open XML (DOCX)", "Stripe", "OIDC", "PandaDoc", "Docker", "nginx", "GitLab CI"],
   },
   {
-    slug: "jubileeconnect",
-    name: "JubileeConnect",
-    tagline: "React Native travel & pilgrim app",
-    role: "Mobile app, end to end",
-    category: "Mobile · Maps · Chat",
+    slug: "smartland",
+    name: "SmartLand",
+    tagline: "Smart tourism & citizen services app",
+    role: "React Native developer (freelance)",
+    category: "Mobile · AI chat · Notifications",
     platform: "Mobile",
-    accent: "#b45309",
+    accent: "#d97706",
     summary:
-      "A tenant-aware, authenticated mobile app for visitors to Rome with five hubs: Info & Tips, Events, Vatican at Hand, Itineraries and Pilgrim Kit.",
+      "A multilingual mobile app for discovering a territory: points of interest, events and guided itineraries, with Plinio, an AI assistant in a real-time chat. Users can also contact local offices through chats with attachments, receive in-app and push notifications, and browse public content without an account.",
     overview:
-      "I developed the JubileeConnect user app end to end in React Native and TypeScript. It covers authentication, localized travel content in three languages, events, Mapbox itineraries with walking directions, embassy and help chat built on the Matrix protocol, and a document vault with in-app PDF viewing. I wrote a custom Matrix client rather than relying on the official SDK, and built the API layer with session persistence, content caching and staging/production configuration.",
+      "SmartLand helps visitors and citizens explore a region in southern Italy. I built and extended the mobile app end to end, from API integration and real-time chat to UI polish and localization in 11 languages.",
     highlights: [
-      { title: "Auth", body: "Splash with session restore, sign-in/up, forgot and change password, privacy acceptance; dual tokens (REST + chat)." },
-      { title: "Itineraries", body: "List, detail and POI detail; full Mapbox map with walking directions, route polyline, POIs and user location." },
-      { title: "Events", body: "List, detail, share, advanced filters and Mapbox event location." },
-      { title: "Chat & support", body: "Matrix-based embassy chat with topics, history and attachments; Help & Support compose flow into room chat." },
-      { title: "Documents", body: "Upload, list and delete; in-app PDF viewing (WebView + PDF.js) and image viewing." },
-      { title: "Content", body: "Travel tips, useful numbers, recommended sites, and searchable Vatican and pilgrim link catalogs from the API." },
-      { title: "i18n", body: "English, Spanish and Italian; Accept-Language on API calls; caches invalidated on language change." },
-      { title: "Account", body: "Profile editing, date-of-birth picker, geolocation preference and permissions." },
-      { title: "UX", body: "Custom drawer, language switcher, bottom chat entry and branded theme." },
-      { title: "Ops", body: "Staging/production switch scripts; TypeScript, ESLint, Prettier and Jest." },
+      { title: "AI assistant chat (Plinio)", body: "Real-time conversation over the Matrix protocol, with replies rendered as Markdown, an animated typing indicator and conversation history. I also traced and fixed a bug that delivered every first question to the AI twice." },
+      { title: "Points of interest & events", body: "Rich detail pages that render HTML content natively, interactive maps, localized opening-hours tables with today highlighted, and event images shown uncropped at their natural aspect ratio." },
+      { title: "Itineraries", body: "Guided itineraries where each stop links through to its point of interest." },
+      { title: "Guest mode", body: "Public content can be browsed without an account; protected actions (profile, AI chat, notifications) lead to registration with a clear prompt and a way back." },
+      { title: "Support chats with attachments", body: "Citizens open chats with local offices about vandalism, urban decay or dangerous situations, sending text, photos and documents. Images are compressed before upload and large files are streamed through native modules." },
+      { title: "Notifications", body: "In-app inbox with an unread badge and server-side read tracking, plus Firebase Cloud Messaging push with device registration tied to the user session." },
+      { title: "Account flows", body: "Registration with a live username availability check, password recovery, profile editing and notification preferences." },
+      { title: "Internationalization", body: "All UI text translated into 11 languages, with locale-aware dates and weekday names." },
     ],
     problems: [
-      "Map-based itineraries: Mapbox Directions walking routes, geo parsing (WKT / coordinates) and location-permission UX.",
-      "Chat without matrix-js-sdk: custom Matrix Client-Server integration with rooms, polling, media upload/download and image compression for size limits.",
-      "Mobile document vault: multipart upload, MIME sniffing and a PDF viewing pipeline.",
-      "Localized CMS-style content: three locales with TTL caches cleared on language switch.",
-      "Multi-environment, multi-tenant backend: default tenant, permission-driven support contacts, staging vs production URLs.",
-      "Session persistence: access/refresh tokens plus chat credentials restored across launches.",
+      "Designed a single API access layer that switches between authenticated and public, tenant-scoped endpoints without touching the screens.",
+      "Built lightweight, dependency-free HTML and Markdown renderers on top of React Native Text, avoiding heavy third-party libraries.",
+      "Added network resilience and diagnostics: request timeouts, development request tracing and step-by-step push-pipeline logging that made backend and device issues quick to isolate.",
+      "Worked closely with the client and backend team: clarified requirements, probed the APIs to confirm available endpoints and wrote precise integration questions, which kept iterations short.",
     ],
-    stack: ["React Native 0.85", "React 19", "TypeScript", "React Navigation", "Axios", "Mapbox", "i18next", "Matrix Client-Server API", "PDF.js", "Jest"],
+    results: [
+      "Shipped more than a dozen feature requests and UI fixes in short iterations.",
+      "Replaced mock screens (reports, notifications) with real, API-driven features.",
+      "The app runs in 11 languages, with consistent, accessible typography (no clipped text) across screens.",
+    ],
+    stack: ["React Native 0.87", "TypeScript", "Axios", "Matrix Client-Server API", "Firebase Cloud Messaging", "Notifee", "Mapbox", "i18next"],
   },
   {
     slug: "suntricity",
